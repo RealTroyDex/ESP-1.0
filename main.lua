@@ -5,7 +5,7 @@ local pls = {}
 function ESP.add_table()
     local plr = game.Players.LocalPlayer
     for _, v in pairs(game:GetService("Players"):GetPlayers()) do
-        if v ~= plr then
+        if v.TeamColor ~= plr.TeamColor then
             ESP.add_player(v)
         end
     end
