@@ -1,4 +1,4 @@
-local esp = {}
+local ESP = {}
 
 local plr = game.Players.LocalPlayer
 local plrs = {}
@@ -17,4 +17,4 @@ function esp.see()
     end
 end
 
-return esp
+return ESP
