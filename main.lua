@@ -1,17 +1,15 @@
 -- Made by TroyDex
 
--- Simple Roblox ESP Module ( idk why i made a module )
+-- Simple Roblox ESP Module
 
 local ESP = {}
 
 local plr = game.Players.LocalPlayer
-
 local players = game:GetService("Players")
-
 local plrs = {}
 
-function addhighlight(plr)
-    if plr.Character:FindFirstChild("Highlight") == nil then
+local function addhighlight(plr)
+    if plr.Character and plr.Character:FindFirstChild("Highlight") == nil then
         local highlight = Instance.new("Highlight")
         highlight.Adornee = plr.Character
         highlight.FillColor = Color3.new(1, 0, 0)
@@ -21,12 +19,10 @@ function addhighlight(plr)
 end
 
 function ESP.addplayers(printable)
-
     if printable == nil then
-        print('Argument at function "ESP.see()" is missing.')
+        print('Argument at function "ESP.addplayers()" is missing.')
     end
 
-    
     for _, v in pairs(players:GetPlayers()) do
         if v ~= plr and table.find(plrs, v) == nil then
             table.insert(plrs, v)
@@ -36,33 +32,39 @@ function ESP.addplayers(printable)
     
     if printable then
         for _, v in pairs(plrs) do
-            print("Player added to table: "..v)
+            print("Player added to table: " .. v.Name)
         end
     end
 end
 
+
 function ESP.remove(player, printable)
-    for i,v in pairs(plrs) do
-        if table.find(plrs, player) ~= nil then
+    for i, v in pairs(plrs) do
+        if v == player then
             table.remove(plrs, i)
+            break
         end
+    end
+    if printable then
+        print("Player removed from table: " .. player.Name)
     end
 end
 
 function ESP.onJoin(player)
-    if player then
-        addplayers(true)
-    end
+    addhighlight(player)
 end
 
-players.PlayerAdded:Connect(function(player)
-    if player then
-        ESP.onJoin(player)
-    end
-end)
+function ESP.main(printable)
+    
+    ESP.addplayers(printable)
 
-players.PlayerRemoving:Connect(function(player)
-    ESP.remove(player, true)
-end)
+    players.PlayerAdded:Connect(function(player)
+        ESP.onJoin(player)
+    end)
+    
+    players.PlayerRemoving:Connect(function(player)
+        ESP.remove(player, printable)
+    end)
+end
 
 return ESP
