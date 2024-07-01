@@ -1,21 +1,18 @@
-getgenv().teamcheck = true
-
 local ESP = {}
 
-local pls = {}
+function ESP.main()
+    local pls = {}
 
-function ESP.add_table()
-    local plr = game.Players.LocalPlayer
-    for _, v in pairs(game:GetService("Players"):GetPlayers()) do
-        if v ~= plr then
-            ESP.add_player(v)
+    function ESP.add_table()
+        local plr = game.Players.LocalPlayer
+        for _, v in pairs(game:GetService("Players"):GetPlayers()) do
+            if v.TeamColor ~= plr.TeamColor then
+                ESP.add_player(v)
+            end
         end
     end
-end
 
-function ESP.add_player(plr)
-    local localPlayer = game.Players.LocalPlayer
-    if not getgenv().teamcheck or (plr.Team ~= localPlayer.Team) then
+    function ESP.add_player(plr)
         print("Added table to: " .. plr.Name)
         local char = plr.Character or plr:FindFirstChildWhichIsA("Model")
         if char then
@@ -45,34 +42,34 @@ function ESP.add_player(plr)
             end
         end)
     end
-end
 
-ESP.add_table()
+    ESP.add_table()
 
-game:GetService("Players").PlayerAdded:Connect(function(plr)
-    ESP.add_player(plr)
-end)
+    game:GetService("Players").PlayerAdded:Connect(function(plr)
+        ESP.add_player(plr)
+    end)
 
-game:GetService("Players").PlayerRemoving:Connect(function(plr)
-    local plrData = pls[plr]
-    if plrData then
-        plrData.Highlight:Destroy()
-        pls[plr] = nil
-        print("Removed highlight for: " .. plr.Name)
-    end
-end)
+    game:GetService("Players").PlayerRemoving:Connect(function(plr)
+        local plrData = pls[plr]
+        if plrData then
+            plrData.Highlight:Destroy()
+            pls[plr] = nil
+            print("Removed highlight for: " .. plr.Name)
+        end
+    end)
 
-game:GetService("RunService").RenderStepped:Connect(function()
-    for plr, plrData in pairs(pls) do
-        if plrData.Highlight.Parent == nil then
-            local char = plr.Character or plr:FindFirstChildWhichIsA("Model")
-            if char then
-                plrData.Highlight.Parent = char:FindFirstChild("HumanoidRootPart")
-                plrData.Highlight.Adornee = char
-                print("Reattached highlight to: " .. plr.Name)
+    game:GetService("RunService").RenderStepped:Connect(function()
+        for plr, plrData in pairs(pls) do
+            if plrData.Highlight.Parent == nil then
+                local char = plr.Character or plr:FindFirstChildWhichIsA("Model")
+                if char then
+                    plrData.Highlight.Parent = char:FindFirstChild("HumanoidRootPart")
+                    plrData.Highlight.Adornee = char
+                    print("Reattached highlight to: " .. plr.Name)
+                end
             end
         end
-    end
-end)
+    end)
+end
 
 return ESP
