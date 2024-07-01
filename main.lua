@@ -9,10 +9,10 @@ local players = game:GetService("Players")
 local plrs = {}
 
 local function addhighlight(plr, teamcheck)
-    if plr.Character and plr.Character:FindFirstChild("Highlight") == nil and teamcheck then
+    if plr.Character and plr.Character:FindFirstChild("Highlight") == nil and teamcheck == true then
         local highlight = Instance.new("Highlight")
         highlight.Adornee = plr.Character
-        highlight.FillColor = plr.TeamColor
+        highlight.FillColor = plr.TeamColor.Color
         highlight.OutlineColor = Color3.new(0, 0, 0)
         highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
         highlight.Parent = plr.Character
