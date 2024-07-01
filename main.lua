@@ -1,3 +1,7 @@
+-- Made by TroyDex
+
+-- Simple Roblox ESP Module ( idk why i made a module )
+
 local ESP = {}
 
 local plr = game.Players.LocalPlayer
@@ -5,6 +9,16 @@ local plr = game.Players.LocalPlayer
 local players = game:GetService("Players")
 
 local plrs = {}
+
+function addhighlight(plr)
+    if plr.Character:FindFirstChild("Highlight") == nil then
+        local highlight = Instance.new("Highlight")
+        highlight.Adornee = plr.Character
+        highlight.FillColor = Color3.new(1, 0, 0)
+        highlight.OutlineColor = Color3.new(0, 0, 0)
+        highlight.Parent = plr.Character
+    end
+end
 
 function ESP.addplayers(printable)
 
@@ -16,6 +30,7 @@ function ESP.addplayers(printable)
     for _, v in pairs(players:GetPlayers()) do
         if v ~= plr and table.find(plrs, v) == nil then
             table.insert(plrs, v)
+            addhighlight(v)
         end
     end
     
