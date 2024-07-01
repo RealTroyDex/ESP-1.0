@@ -14,6 +14,7 @@ local function addhighlight(plr)
         highlight.Adornee = plr.Character
         highlight.FillColor = Color3.new(1, 0, 0)
         highlight.OutlineColor = Color3.new(0, 0, 0)
+        highlight.AlwaysOnTop = true
         highlight.Parent = plr.Character
     end
 end
