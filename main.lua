@@ -27,6 +27,10 @@ function ESP.addplayers(printable)
         if v ~= plr and table.find(plrs, v) == nil then
             table.insert(plrs, v)
             addhighlight(v)
+            
+            v.CharacterAdded:Connect(function()
+                addhighlight(v)
+            end)
         end
     end
     
@@ -36,7 +40,6 @@ function ESP.addplayers(printable)
         end
     end
 end
-
 
 function ESP.remove(player, printable)
     for i, v in pairs(plrs) do
@@ -52,12 +55,15 @@ end
 
 function ESP.onJoin(player)
     addhighlight(player)
+    
+    player.CharacterAdded:Connect(function()
+        addhighlight(player)
+    end)
 end
 
 function ESP.main(printable)
-    
     ESP.addplayers(printable)
-
+    
     players.PlayerAdded:Connect(function(player)
         ESP.onJoin(player)
     end)
