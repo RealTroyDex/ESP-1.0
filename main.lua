@@ -13,7 +13,7 @@ function ESP.see()
     end
     
     for _, v in pairs(plrs) do
-        print("Player: "..v)
+        print("Player: "..v.Name)
     end
 end
 
