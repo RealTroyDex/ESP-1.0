@@ -8,8 +8,15 @@ local plr = game.Players.LocalPlayer
 local players = game:GetService("Players")
 local plrs = {}
 
-local function addhighlight(plr)
-    if plr.Character and plr.Character:FindFirstChild("Highlight") == nil then
+local function addhighlight(plr, teamcheck)
+    if plr.Character and plr.Character:FindFirstChild("Highlight") == nil and teamcheck then
+        local highlight = Instance.new("Highlight")
+        highlight.Adornee = plr.Character
+        highlight.FillColor = plr.TeamColor
+        highlight.OutlineColor = Color3.new(0, 0, 0)
+        highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+        highlight.Parent = plr.Character
+    else
         local highlight = Instance.new("Highlight")
         highlight.Adornee = plr.Character
         highlight.FillColor = Color3.new(1, 0, 0)
@@ -19,7 +26,7 @@ local function addhighlight(plr)
     end
 end
 
-function ESP.addplayers(printable)
+function ESP.addplayers(printable, team)
     if printable == nil then
         print('Argument at function "ESP.addplayers()" is missing.')
     end
@@ -27,10 +34,10 @@ function ESP.addplayers(printable)
     for _, v in pairs(players:GetPlayers()) do
         if v ~= plr and table.find(plrs, v) == nil then
             table.insert(plrs, v)
-            addhighlight(v)
+            addhighlight(v, team)
             
             v.CharacterAdded:Connect(function()
-                addhighlight(v)
+                addhighlight(v, team)
             end)
         end
     end
@@ -62,8 +69,8 @@ function ESP.onJoin(player)
     end)
 end
 
-function ESP.main(printable)
-    ESP.addplayers(printable)
+function ESP.main(printable, teamcheck)
+    ESP.addplayers(printable, teamcheck)
     
     players.PlayerAdded:Connect(function(player)
         ESP.onJoin(player)
