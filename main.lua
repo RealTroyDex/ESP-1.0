@@ -5,7 +5,7 @@ local plrs = {}
 
 local players = game:GetService("Players")
 
-function esp.see()
+function ESP.see()
     for _, v in pairs(players:GetPlayers()) do
         if v ~= plr then
             table.insert(plrs, v)
