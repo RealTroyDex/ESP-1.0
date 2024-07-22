@@ -1,6 +1,4 @@
--- Made by TroyDex
-
--- Improved Roblox ESP Module
+-- Simple Roblox ESP Module
 
 local ESP = {}
 
@@ -9,21 +7,19 @@ local players = game:GetService("Players")
 local plrs = {}
 
 local function addhighlight(player, teamcheck, showteam)
-    if player.Character then
-        local highlight = player.Character:FindFirstChild("Highlight")
-        if not highlight then
-            highlight = Instance.new("Highlight")
-            highlight.Adornee = player.Character
-            highlight.OutlineColor = Color3.new(0, 0, 0)
-            highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-            highlight.Parent = player.Character
-        end
+    if player.Character and player.Character:FindFirstChild("Highlight") == nil then
+        local highlight = Instance.new("Highlight")
+        highlight.Adornee = player.Character
         
-        if teamcheck and showteam and player.Team then
+        if teamcheck and showteam and player.Team == plr.Team then
             highlight.FillColor = player.TeamColor.Color
         else
             highlight.FillColor = Color3.new(1, 0, 0)
         end
+
+        highlight.OutlineColor = Color3.new(0, 0, 0)
+        highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+        highlight.Parent = player.Character
     end
 end
 
@@ -32,20 +28,20 @@ function ESP.addplayers(printable, teamcheck, showteam)
         print('Argument at function "ESP.addplayers()" is missing.')
     end
 
-    for _, player in pairs(players:GetPlayers()) do
-        if player ~= plr and not table.find(plrs, player) then
-            table.insert(plrs, player)
-            addhighlight(player, teamcheck, showteam)
+    for _, v in pairs(players:GetPlayers()) do
+        if v ~= plr and table.find(plrs, v) == nil then
+            table.insert(plrs, v)
+            addhighlight(v, teamcheck, showteam)
             
-            player.CharacterAdded:Connect(function()
-                addhighlight(player, teamcheck, showteam)
+            v.CharacterAdded:Connect(function()
+                addhighlight(v, teamcheck, showteam)
             end)
         end
     end
     
     if printable then
-        for _, player in pairs(plrs) do
-            print("Player added to table: " .. player.Name)
+        for _, v in pairs(plrs) do
+            print("Player added to table: " .. v.Name)
         end
     end
 end
