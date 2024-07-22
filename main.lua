@@ -6,7 +6,7 @@ local plr = game.Players.LocalPlayer
 local players = game:GetService("Players")
 local plrs = {}
 
-local function addhighlight(player, teamcheck, showteam)
+function ESP.addhighlight(player, teamcheck, showteam)
     if player.Character and player.Character:FindFirstChild("Highlight") == nil then
         local highlight = Instance.new("Highlight")
         highlight.Adornee = player.Character
@@ -31,10 +31,10 @@ function ESP.addplayers(printable, teamcheck, showteam)
     for _, v in pairs(players:GetPlayers()) do
         if v ~= plr and table.find(plrs, v) == nil then
             table.insert(plrs, v)
-            addhighlight(v, teamcheck, showteam)
+            ESP.addhighlight(v, teamcheck, showteam)
             
             v.CharacterAdded:Connect(function()
-                addhighlight(v, teamcheck, showteam)
+                ESP.addhighlight(v, teamcheck, showteam)
             end)
         end
     end
@@ -59,10 +59,10 @@ function ESP.remove(player, printable)
 end
 
 function ESP.onJoin(player, teamcheck, showteam)
-    addhighlight(player, teamcheck, showteam)
+    ESP.addhighlight(player, teamcheck, showteam)
     
     player.CharacterAdded:Connect(function()
-        addhighlight(player, teamcheck, showteam)
+        ESP.addhighlight(player, teamcheck, showteam)
     end)
 end
 
